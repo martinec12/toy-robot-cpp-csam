@@ -4,7 +4,9 @@
 //class Robot;
 
 #include "Robot.hpp"
+#include "Table.hpp"
 #include "Point.hpp"
+#include "Constants.hpp"
 
 class ICommand
 {
@@ -18,13 +20,14 @@ public:
 class PlaceCommand : public ICommand
 {
 public:
-    PlaceCommand(Robot robot, Point destination, Direction newDirection);
+    PlaceCommand(Robot &robot, Table &table, Point destination, Direction newDirection);
     Point getDeployPosition();
     Direction getDeployDirection();
     void execute() const;
 
 private:
     Robot &mRobot;
+    Table &mTable;
     Point mDeployPosition;
     Direction mDeployDirection;
 };
@@ -32,16 +35,17 @@ private:
 class MoveCommand : public ICommand
 {
 public:
-    MoveCommand(Robot robot);
+    MoveCommand(Robot &robot, Table &table);
     void execute() const;
 private:
     Robot &mRobot;
+    Table &mTable;
 };
 
 class LeftCommand : public ICommand
 {
 public:
-    LeftCommand(Robot robot);
+    LeftCommand(Robot &robot);
     void execute() const;
 private:
     Robot &mRobot;
@@ -50,7 +54,7 @@ private:
 class RightCommand : public ICommand
 {
 public:
-    RightCommand(Robot robot);
+    RightCommand(Robot &robot);
     void execute() const;
 private:
     Robot &mRobot;
@@ -59,7 +63,7 @@ private:
 class ReportCommand : public ICommand
 {
 public:
-    ReportCommand(Robot robot);
+    ReportCommand(Robot &robot);
     void execute() const;
 private:
     Robot &mRobot;

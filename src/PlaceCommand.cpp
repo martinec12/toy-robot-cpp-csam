@@ -1,9 +1,12 @@
 #include "Robot.hpp"
+#include "Table.hpp"
 #include "Point.hpp"
+#include "Constants.hpp"
 #include "Command.hpp"
 
-PlaceCommand::PlaceCommand(Robot robot, Point destination, Direction newDirection) :
-    mRobot(robot), mDeployPosition(destination), mDeployDirection(newDirection)
+PlaceCommand::PlaceCommand(Robot &robot, Table &table, Point destination, Direction newDirection) :
+    mRobot(robot), mTable(table),
+    mDeployPosition(destination), mDeployDirection(newDirection)
 {
 
 }
@@ -20,5 +23,5 @@ Direction PlaceCommand::getDeployDirection()
 
 void PlaceCommand::execute() const
 {
-    mRobot.place(mDeployPosition, mDeployDirection);
+    mRobot.place(mTable, mDeployPosition, mDeployDirection) ;
 }
