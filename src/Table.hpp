@@ -19,7 +19,7 @@ public:
     
 private:
     bool isSlotOccupied(const Point &point);
-    //OperationStatus removePointFromSet(const Point &point);
+    OperationStatus removePointFromSet(const Point &point);
 #ifdef DEBUG
     void displayOccupiedSlots();
 #endif

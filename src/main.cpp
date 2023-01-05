@@ -1,3 +1,4 @@
+#include "Parser.hpp"
 #include "Table.hpp"
 #include "Robot.hpp"
 #include <iostream>
@@ -9,10 +10,7 @@
 
 int main(int argc, char *argv[])
 {
-#if 0
-    // TODO: create a Parser class to handle parsing of user input
     Parser commandParser(argc, argv);
-#endif
     Table myTable;
     Robot myRobot;
     RobotInvoker robotInvoker;
@@ -20,10 +18,10 @@ int main(int argc, char *argv[])
 
     while (true)
     {
-#if 0
         // TODO: Parser class will return a pointer to a Command object
         // as a result of parsing
-        std::unique_ptr<ICommand> command = commandParser.readAndParseCommand();
+        commandParser.readInputCommandString();
+        std::unique_ptr<ICommand> command = commandParser.convertInputStringToCommand(myRobot, myTable);
         if (command == nullptr)
         {
             std::cout << "Invalid command. Try again." << std::endl;
@@ -34,7 +32,6 @@ int main(int argc, char *argv[])
         // Transfer ownership of command to setCommand
         robotInvoker.setCommand(std::move(command));
         robotInvoker.invokeCommand();
-#endif
     }
     
     return 0;

@@ -6,7 +6,9 @@
 Table::Table(std::size_t length, std::size_t width) : 
     mLength(length), mWidth(width)
 {
-
+    std::cout << "Table dimensions: "
+              << mLength << " x "
+              << mWidth << " units" << std::endl;
 }
 
 bool Table::isPointWithinTableBounds(const Point &point)
@@ -58,7 +60,8 @@ OperationStatus Table::releaseSlot(const Point &point)
                   << "Failed to release a slot that is not occupied in the first place" << std::endl;
         return OperationStatus::ERROR;
     }
-
+#ifdef DEBUG
+    // TODO: investigate why this does not work
     if (mOccupiedSlots.erase(point) == 0)
     {
         std::cout << "Release slot ("
@@ -67,8 +70,9 @@ OperationStatus Table::releaseSlot(const Point &point)
                   << "Slot point not erased" << std::endl;
         return OperationStatus::ERROR;
     }
-
-    return OperationStatus::SUCCESS;
+#endif
+    OperationStatus result = removePointFromSet(point);
+    return result;
 }
 
 bool Table::isTableOccupied()
@@ -101,8 +105,6 @@ bool Table::isSlotOccupied(const Point &point)
     return false;
 }
 
-#if 0
-// might not be needed
 OperationStatus Table::removePointFromSet(const Point &point)
 {
     for(auto it = mOccupiedSlots.begin(); it != mOccupiedSlots.end(); ++it)
@@ -113,9 +115,12 @@ OperationStatus Table::removePointFromSet(const Point &point)
             return OperationStatus::SUCCESS;
         }
     }
+    std::cout << "Remove point ("
+              << point.getXCoordinate() << ","
+              << point.getYCoordinate() << ") failed" << std::endl
+              << "Slot point not erased" << std::endl;
     return OperationStatus::ERROR;
 }
-#endif
 
 #ifdef DEBUG
 void Table::displayOccupiedSlots()

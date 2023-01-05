@@ -17,4 +17,6 @@ enum class OperationStatus
     ERROR
 };
 
+extern const std::string DEFAULT_INPUT_FILENAME;
+
 #endif // _CONSTANTS_HPP_
