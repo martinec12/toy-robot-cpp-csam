@@ -5,6 +5,7 @@
 #include "Command.hpp"
 #include <memory>
 #include "Point.hpp"
+#include <algorithm>
 
 Robot::Robot() : mIsPlaced(false)
 {
@@ -155,13 +156,63 @@ bool Robot::checkDestinationValidity(Table &table, Point &destination)
 
 OperationStatus Robot::computeDestinationXY(Point &destination)
 {
-    // TODO:
+    // Determines the destination point after doing a MOVE
+    switch (mDirection)
+    {
+        case Direction::NORTH:
+            destination.setXCoordinate(mLocation.getXCoordinate());
+            destination.setYCoordinate(mLocation.getYCoordinate() + 1);
+            break;
+        case Direction::EAST:
+            destination.setXCoordinate(mLocation.getXCoordinate() + 1);
+            destination.setYCoordinate(mLocation.getYCoordinate());
+            break;
+        case Direction::WEST:
+            if (mLocation.getXCoordinate() == 0)
+            {
+                std::cout << "Cannot go WEST anymore, so not moving" << std::endl;
+                return OperationStatus::ERROR;
+            }
+            destination.setXCoordinate(mLocation.getXCoordinate() - 1);
+            destination.setYCoordinate(mLocation.getYCoordinate());
+            break;
+        case Direction::SOUTH:
+            if (mLocation.getYCoordinate() == 0)
+            {
+                std::cout << "Cannot go SOUTH anymore, so not moving" << std::endl;
+                return OperationStatus::ERROR;
+            }
+            destination.setXCoordinate(mLocation.getXCoordinate());
+            destination.setYCoordinate(mLocation.getYCoordinate() - 1);
+            break;
+    }
     return OperationStatus::SUCCESS;
 }
 
 OperationStatus Robot::computeNewDirection(std::string rotation)
 {
-    // TODO:
+    if (rotation == "right")
+    {
+        std::vector<Direction>::iterator it = std::find(orderedDirections.begin(), orderedDirections.end(), mDirection);
+        std::vector<Direction>::iterator newDirectionIt;        
+        newDirectionIt = ++it;
+        if(newDirectionIt == orderedDirections.end())
+        {
+            newDirectionIt = orderedDirections.begin();
+        }
+        mDirection = *newDirectionIt;
+    }
+    else
+    {
+        std::vector<Direction>::reverse_iterator it = std::find(orderedDirections.rbegin(), orderedDirections.rend(), mDirection);
+        std::vector<Direction>::reverse_iterator newDirectionIt;       
+        newDirectionIt = ++it;
+        if(newDirectionIt == orderedDirections.rend())
+        {
+            newDirectionIt = orderedDirections.rbegin();
+        }
+        mDirection = *newDirectionIt;
+    }
     return OperationStatus::SUCCESS;
 }    
 

@@ -28,7 +28,6 @@ private:
 
     unsigned int mRobotId;
     bool mIsPlaced;
-    std::string mMainCommand;
     Point mLocation;
     Direction mDirection;
 };
