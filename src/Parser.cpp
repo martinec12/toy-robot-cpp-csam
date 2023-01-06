@@ -7,10 +7,11 @@
 #include "Helper.hpp"
 #include "Command.hpp"
 #include <memory>
+#include <istream>
 
-Parser::Parser(int mainArgs, char *mainArgv[]) :
+Parser::Parser(int mainArgs, const char * const mainArgv[], std::istream &customIStream) :
     mInternalFilestream(build_stream(mainArgs, mainArgv)),
-    mInputStream(mInternalFilestream.is_open() ? mInternalFilestream : std::cin),
+    mInputStream(mInternalFilestream.is_open() ? mInternalFilestream : customIStream),
     mStopInputs(false)
 {
 

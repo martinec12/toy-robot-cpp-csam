@@ -12,11 +12,12 @@
 #include "Command.hpp"
 #include "Robot.hpp"
 #include "Table.hpp"
+#include <istream>
 
 class Parser
 {
 public:
-    Parser(int mainArgs, char *mainArgv[]);
+    Parser(int mainArgs, const char * const mainArgv[], std::istream &customIStream);
     ~Parser();
     void readInputCommandString();
     std::unique_ptr<ICommand> convertInputStringToCommand(Robot &robot, Table &table);
@@ -25,7 +26,7 @@ public:
 private:
 
     // This is called as part of constructor initializer for member mInternalFilestream
-    static std::ifstream build_stream(int mainArgs,char *mainArgv[]) 
+    static std::ifstream build_stream(int mainArgs, const char * const mainArgv[]) 
     {
         std::ifstream localInputFilestream;
         std::string inputFilename;
