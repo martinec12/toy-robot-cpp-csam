@@ -13,13 +13,8 @@ TEST(ParserPlaceCommandTests, ValidPlaceCommandStandard)
 {
     Robot r;
     Table t;
-    int dummyArgs = 1;
-    const char * dummyArgv[] = {"dummy.exe"};
-    std::stringstream commandStringStream;
-    Parser p(dummyArgs, dummyArgv, commandStringStream);
-
     std::string commandString = "PLACE 0,1,NORTH";
-    commandStringStream.str(commandString);
+    StringParser p(commandString);
     p.readInputCommandString();
     std::unique_ptr<ICommand> cmdPtr = p.convertInputStringToCommand(r, t);
     
@@ -32,13 +27,8 @@ TEST(ParserPlaceCommandTests, ValidPlaceCommandCaseVariation)
 {
     Robot r;
     Table t;
-    int dummyArgs = 1;
-    const char * dummyArgv[] = {"dummy.exe"};
-    std::stringstream commandStringStream;
-    Parser p(dummyArgs, dummyArgv, commandStringStream);
-
     std::string commandString = "plAce 2,2,wESt";
-    commandStringStream.str(commandString);
+    StringParser p(commandString);
     p.readInputCommandString();
     std::unique_ptr<ICommand> cmdPtr = p.convertInputStringToCommand(r, t);
     
@@ -51,13 +41,8 @@ TEST(ParserPlaceCommandTests, ValidPlaceCommandLeadingSpaces)
 {
     Robot r;
     Table t;
-    int dummyArgs = 1;
-    const char * dummyArgv[] = {"dummy.exe"};
-    std::stringstream commandStringStream;
-    Parser p(dummyArgs, dummyArgv, commandStringStream);
-
     std::string commandString = "      PLACE 4,2,NORTH";
-    commandStringStream.str(commandString);
+    StringParser p(commandString);
     p.readInputCommandString();
     std::unique_ptr<ICommand> cmdPtr = p.convertInputStringToCommand(r, t);
     
@@ -70,13 +55,8 @@ TEST(ParserPlaceCommandTests, ValidPlaceCommandTrailingSpaces)
 {
     Robot r;
     Table t;
-    int dummyArgs = 1;
-    const char * dummyArgv[] = {"dummy.exe"};
-    std::stringstream commandStringStream;
-    Parser p(dummyArgs, dummyArgv, commandStringStream);
-
     std::string commandString = "PLACE 0,0,SOUTH     ";
-    commandStringStream.str(commandString);
+    StringParser p(commandString);
     p.readInputCommandString();
     std::unique_ptr<ICommand> cmdPtr = p.convertInputStringToCommand(r, t);
     
@@ -89,13 +69,8 @@ TEST(ParserPlaceCommandTests, ValidPlaceCommandInbetweenSpaces)
 {
     Robot r;
     Table t;
-    int dummyArgs = 1;
-    const char * dummyArgv[] = {"dummy.exe"};
-    std::stringstream commandStringStream;
-    Parser p(dummyArgs, dummyArgv, commandStringStream);
-
     std::string commandString = "PLACE      1,1,EAST";
-    commandStringStream.str(commandString);
+    StringParser p(commandString);
     p.readInputCommandString();
     std::unique_ptr<ICommand> cmdPtr = p.convertInputStringToCommand(r, t);
     
@@ -108,13 +83,8 @@ TEST(ParserPlaceCommandTests, InvalidPlaceSyntax1)
 {
     Robot r;
     Table t;
-    int dummyArgs = 1;
-    const char * dummyArgv[] = {"dummy.exe"};
-    std::stringstream commandStringStream;
-    Parser p(dummyArgs, dummyArgv, commandStringStream);
-
     std::string commandString = "PLACE";
-    commandStringStream.str(commandString);
+    StringParser p(commandString);
     p.readInputCommandString();
     std::unique_ptr<ICommand> cmdPtr = p.convertInputStringToCommand(r, t);
     EXPECT_EQ(nullptr, cmdPtr.get());
@@ -124,13 +94,8 @@ TEST(ParserPlaceCommandTests, InvalidPlaceSyntax2)
 {
     Robot r;
     Table t;
-    int dummyArgs = 1;
-    const char * dummyArgv[] = {"dummy.exe"};
-    std::stringstream commandStringStream;
-    Parser p(dummyArgs, dummyArgv, commandStringStream);
-
     std::string commandString = "PLACE PLACE";
-    commandStringStream.str(commandString);
+    StringParser p(commandString);
     p.readInputCommandString();
     std::unique_ptr<ICommand> cmdPtr = p.convertInputStringToCommand(r, t);
     EXPECT_EQ(nullptr, cmdPtr.get());
@@ -140,13 +105,8 @@ TEST(ParserPlaceCommandTests, InvalidPlaceSyntax3)
 {
     Robot r;
     Table t;
-    int dummyArgs = 1;
-    const char * dummyArgv[] = {"dummy.exe"};
-    std::stringstream commandStringStream;
-    Parser p(dummyArgs, dummyArgv, commandStringStream);
-
     std::string commandString = "PLACE 0,1,NORTH,SOUTH";
-    commandStringStream.str(commandString);
+    StringParser p(commandString);
     p.readInputCommandString();
     std::unique_ptr<ICommand> cmdPtr = p.convertInputStringToCommand(r, t);
     EXPECT_EQ(nullptr, cmdPtr.get());
@@ -156,13 +116,8 @@ TEST(ParserPlaceCommandTests, InvalidXPlaceParameter)
 {
     Robot r;
     Table t;
-    int dummyArgs = 1;
-    const char * dummyArgv[] = {"dummy.exe"};
-    std::stringstream commandStringStream;
-    Parser p(dummyArgs, dummyArgv, commandStringStream);
-
     std::string commandString = "PLACE word,1,NORTH";
-    commandStringStream.str(commandString);
+    StringParser p(commandString);
     p.readInputCommandString();
     std::unique_ptr<ICommand> cmdPtr = p.convertInputStringToCommand(r, t);
     EXPECT_EQ(nullptr, cmdPtr.get());
@@ -172,13 +127,8 @@ TEST(ParserPlaceCommandTests, InvalidYPlaceParameter)
 {
     Robot r;
     Table t;
-    int dummyArgs = 1;
-    const char * dummyArgv[] = {"dummy.exe"};
-    std::stringstream commandStringStream;
-    Parser p(dummyArgs, dummyArgv, commandStringStream);
-
     std::string commandString = "PLACE 0,Word,NORTH";
-    commandStringStream.str(commandString);
+    StringParser p(commandString);
     p.readInputCommandString();
     std::unique_ptr<ICommand> cmdPtr = p.convertInputStringToCommand(r, t);
     EXPECT_EQ(nullptr, cmdPtr.get());
@@ -188,13 +138,8 @@ TEST(ParserPlaceCommandTests, InvalidDirectionPlaceParameter1)
 {
     Robot r;
     Table t;
-    int dummyArgs = 1;
-    const char * dummyArgv[] = {"dummy.exe"};
-    std::stringstream commandStringStream;
-    Parser p(dummyArgs, dummyArgv, commandStringStream);
-
     std::string commandString = "PLACE 0,1,OTHERWORD";
-    commandStringStream.str(commandString);
+    StringParser p(commandString);
     p.readInputCommandString();
     std::unique_ptr<ICommand> cmdPtr = p.convertInputStringToCommand(r, t);
     EXPECT_EQ(nullptr, cmdPtr.get());
@@ -204,13 +149,8 @@ TEST(ParserPlaceCommandTests, InvalidDirectionPlaceParameter2)
 {
     Robot r;
     Table t;
-    int dummyArgs = 1;
-    const char * dummyArgv[] = {"dummy.exe"};
-    std::stringstream commandStringStream;
-    Parser p(dummyArgs, dummyArgv, commandStringStream);
-
     std::string commandString = "PLACE 0,1,25";
-    commandStringStream.str(commandString);
+    StringParser p(commandString);
     p.readInputCommandString();
     std::unique_ptr<ICommand> cmdPtr = p.convertInputStringToCommand(r, t);
     EXPECT_EQ(nullptr, cmdPtr.get());

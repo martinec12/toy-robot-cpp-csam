@@ -17,36 +17,37 @@
 class Parser
 {
 public:
-    Parser(int mainArgs, const char * const mainArgv[], std::istream &customIStream);
-    ~Parser();
+    Parser();
     void readInputCommandString();
     std::unique_ptr<ICommand> convertInputStringToCommand(Robot &robot, Table &table);
     bool shouldStopInput();
 
+protected:
+    std::unique_ptr<std::istream> mInputStream;
+
 private:
-
-    // This is called as part of constructor initializer for member mInternalFilestream
-    static std::ifstream build_stream(int mainArgs, const char * const mainArgv[]) 
-    {
-        std::ifstream localInputFilestream;
-        std::string inputFilename;
-        if (mainArgs < 2)
-        {
-            inputFilename = DEFAULT_INPUT_FILENAME;
-        }
-        else
-        {
-            inputFilename = mainArgv[1];
-        }
-
-        localInputFilestream.open(inputFilename);
-        return localInputFilestream;
-    }
-
     std::string mInputCommandString;
-    std::ifstream mInternalFilestream;
-    std::istream &mInputStream;
     bool mStopInputs;
 };
+
+class FileParser : public Parser
+{
+public:
+    FileParser(const char * fileName);
+    ~FileParser();
+};
+
+class CommandLineParser : public Parser
+{
+public:
+    CommandLineParser();
+};
+
+class StringParser : public Parser
+{
+public:
+    StringParser(std::string inputString);
+};
+
 
 #endif // _PARSER_HPP_

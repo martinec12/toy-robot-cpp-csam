@@ -9,28 +9,20 @@
 #include <memory>
 #include <istream>
 
-Parser::Parser(int mainArgs, const char * const mainArgv[], std::istream &customIStream) :
-    mInternalFilestream(build_stream(mainArgs, mainArgv)),
-    mInputStream(mInternalFilestream.is_open() ? mInternalFilestream : customIStream),
-    mStopInputs(false)
+Parser::Parser() : mStopInputs(false)
 {
 
-}
-
-Parser::~Parser()
-{
-    mInternalFilestream.close();
 }
 
 void Parser::readInputCommandString()
 {
-    if (mInputStream.eof())
+    if (mInputStream->eof())
     {
         std::cout << "Eof encountered before any inputs/Empty input" << std::endl;
         mStopInputs = true;
     }
-    std::getline(mInputStream, mInputCommandString);
-    if (mInputStream.eof())
+    std::getline(*mInputStream, mInputCommandString);
+    if (mInputStream->eof())
     {
         std::cout << "Eof of the input" << std::endl;
         mStopInputs = true;

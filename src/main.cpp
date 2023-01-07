@@ -10,24 +10,31 @@
 
 int main(int argc, char *argv[])
 {
-    Parser commandParser(argc, argv, std::cin);
+    std::unique_ptr<Parser> commandParser;
     Table myTable;
     Robot myRobot;
     RobotInvoker robotInvoker;
     std::string commandString;
 
+    if (argc == 2)
+    {
+        commandParser = std::make_unique<FileParser>(argv[1]);
+    }
+    else
+    {
+        commandParser = std::make_unique<CommandLineParser>();
+    }
+
     while (true)
     {
-        // TODO: Parser class will return a pointer to a Command object
-        // as a result of parsing
-        commandParser.readInputCommandString();
-        if (commandParser.shouldStopInput())
+        commandParser->readInputCommandString();
+        if (commandParser->shouldStopInput())
         {
             std::cout << "Ending inputs as desired by user" << std::endl;
             break;
         }
 
-        std::unique_ptr<ICommand> command = commandParser.convertInputStringToCommand(myRobot, myTable);
+        std::unique_ptr<ICommand> command = commandParser->convertInputStringToCommand(myRobot, myTable);
         if (command == nullptr)
         {
             std::cout << "Invalid command. Try again." << std::endl;
